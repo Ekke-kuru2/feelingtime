@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Hello Bulma!</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css">
+    <style>
+        input[type="range"]{
+            display:block;
+        }
+        .panel-block{
+            display:block;
+            padding:50px;
+        }
+        .panel-block div{
+            margin:20px auto;
+
+        }
+        .range{
+            width:100%;
+            margin:10px;
+        }
+        .valueholder{
+            display:flex;
+        }
+    </style>
+    <script>
+        window.onload=()=>{
+            // 要素の取得
+            const range = document.getElementById('range');
+            const year=document.getElementById("year");
+            const male=document.getElementById("male");
+            const result=document.getElementById("result");
+            const progress=document.getElementById("progress");
+            const male_whole=Math.log(82.64)-Math.log(1);
+            const female_whole=Math.log(88.74)-Math.log(1);
+
+            // レンジスライダーの状態変化時のイベント
+            range.addEventListener('input', (e) => {
+                // レンジスライダーの値を取得
+                // + は、string -> numberに変化させる
+                const value = +e.target.value
+                year.innerHTML=value;
+                if(male.checked){//男性
+                    if(value>81){
+                        result.innerHTML="あなたはすでに日本の平均寿命より長く生きています。おめでとうございます🎊";
+                    }
+                    else{
+                        var past=Math.log(value+1)-Math.log(1);
+                        var ratio=parseInt((past/male_whole)*100);
+                        result.innerHTML='あなたは体感では人生の<span class="title is-2">'+ratio+"%</span>を過ごしました。"
+                        progress.value=ratio;
+                    }
+                }
+                else{//女性
+                    if(value>87){
+                        result.innerHTML="あなたはすでに日本の平均寿命より長く生きています。おめでとうございます🎊";
+                    }
+                    else{
+                        var past=Math.log(value+1)-Math.log(1);
+                        var ratio=parseInt((past/female_whole)*100);
+                        result.innerHTML='あなたは体感では人生の<span class="title is-2">'+ratio+"%</span>を過ごしました。"
+                        progress.value=ratio;
+                    }
+                }
+
+
+            })
+        };
+    </script>
+</head>
+  <body>
+  <section class="section">
+    <div class="container">
+      <h1 class="title">
+        人生体感時間計算機
+      </h1>
+      <p class="subtitle">
+        あなたはもうすでに人生の○○%を終えている!?
+      </p>
+      <p class="subtitle">
+        ジャネーの法則に基づき、人生の体感時間を計算します。2020年の日本人の平均寿命をもとにしています。
+      </p>
+      <div class="panel is-primary">
+        <p class="panel-heading">
+          #
+        </p>
+        <div class="panel-block">
+            <div class="control block">
+                <label class="block radio">
+                  <input id="male" type="radio" name="sex" checked>
+                  男性
+                </label>
+                <label class=" blockradio">
+                  <input id="female" type="radio" name="sex">
+                  女性
+                </label>
+              </div>
+              <p class="block">年齢を入力してください</p>
+          <p class="block control has-icons-left">
+            <input class="range" id="range" type="range" value="0" min="0" max="120" >
+          </p>
+          <div class="valueholder">
+            <p class="title is-2"><span id="year">0</span>歳</p>
+          </div>
+          <p id="result">あなたは体感では人生の<span class="title is-2">0%</span>を過ごしました。</p>
+          <progress id="progress" class="progress is-warning" value="0" max="100">100%</progress>
+        </div>
+    </div>
+    </div>
+  </section>
+  </body>
+</html>
